@@ -37,3 +37,5 @@ lerna-debug.log*
 
 # Env
 .env
+jwtRS256.key
+jwtRS256.key.pub
