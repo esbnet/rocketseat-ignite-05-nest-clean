@@ -1,12 +1,12 @@
 @baseUrl = http://localhost:3333
-
+@authToken = {{authenticate.response.body.access_token}}
 # @name create_account
 POST {{baseUrl}}/accounts
 Content-Type: application/json
 
 {
   "name": "admin",
-  "email": "u4h56g@example.com",
+  "email": "neno@example.com",
   "password": "admin123"
 }
 
@@ -17,7 +17,7 @@ POST {{baseUrl}}/sessions
 Content-Type: application/json
 
 {
-  "email": "u4h56g@example.com",
+  "email": "neno@example.com",
   "password": "admin123"
 }
 
@@ -26,4 +26,4 @@ Content-Type: application/json
 # @name create_question
 POST {{baseUrl}}/questions
 Content-Type: application/json
-Authorization: Bearer "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbG10YnJ2ejgwMDAwaGZpZ2hkOW00YXF1IiwiaWF0IjoxNjk1NjcxODA1fQ.UAXOgUwumnsGhayL9GScpbXjbCJcOnfWIlAv-1CLFMHuXkTm-EPuDNv-kmn5XFMUL6TAMEqxz1q90iERqbozqgvIpskRaYNoqpKhZwn-20jhwBUvniFuAWQBJPPDOOXWQ5dwUl6cZuKeUP3Vswz9N60aJ-u9QTXwptYgTN6NMVxrRik0Ukcim4VSKQxKFCP016PMpSXe_FOisc1RATLc2o8iISxktpG2V9rJIrDxAoliLLOBt8hQZu9I0Yq-sD--sNNKTbSiwZPvdFXz4U4s-KphnPjHbDeEmjrHQ5RYdmlPndn0e_-Vp4qvDRbIyXLZX-mHPXVGaGsjzC9J8QLvDA
+Authorization: Bearer {{authToken}}
