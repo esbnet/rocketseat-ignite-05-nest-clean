@@ -29,12 +29,12 @@ describe('Create Account Controller (e2e)', () => {
 
     expect(response.statusCode).toBe(201)
 
-    const user = await prisma.user.findUnique({
+    const userOnDatabase = await prisma.user.findUnique({
       where: {
         email: '5QgQb@example.com',
       },
     })
 
-    expect(user).toBeTruthy()
+    expect(userOnDatabase).toBeTruthy()
   })
 })
