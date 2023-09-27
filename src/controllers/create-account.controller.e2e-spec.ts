@@ -4,7 +4,7 @@ import { INestApplication } from '@nestjs/common'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
 
-describe('Create Account Controller (e2e)', () => {
+describe('Create Account (e2e)', () => {
   let app: INestApplication
   let prisma: PrismaService
 

@@ -5,7 +5,7 @@ import { Test } from '@nestjs/testing'
 import { hash } from 'bcryptjs'
 import request from 'supertest'
 
-describe('Authenticate Controller (e2e)', () => {
+describe('Authenticate (e2e)', () => {
   let app: INestApplication
   let prisma: PrismaService
 
