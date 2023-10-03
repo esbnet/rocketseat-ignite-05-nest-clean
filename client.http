@@ -33,7 +33,6 @@ Authorization: Bearer {{authToken}}
   "content": "Conteúdo da pergunta"
 }
 
-
 ###
 
 # @name list_questions
