@@ -1,23 +1,23 @@
 import { AggregateRoot } from '@/core/entities/aggregate-root'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
+import { QuestionBestAnswerChosenEvent } from '@/domain/forum/enterprise/events/question-best-answer-chosen-event'
 import dayjs from 'dayjs'
-import { QuastionBestAnswerChosenEvent } from '../events/question-best-answer-chosen-event'
 import { QuestionAttachmentList } from './question-attachment-list'
 import { Slug } from './value-objects/slug'
 
-export interface IQuestionProps {
+export interface QuestionProps {
   authorId: UniqueEntityID
-  bestAnswerId?: UniqueEntityID
+  bestAnswerId?: UniqueEntityID | null
   title: string
   content: string
   slug: Slug
   attachments: QuestionAttachmentList
   createdAt: Date
-  updatedAt?: Date
+  updatedAt?: Date | null
 }
 
-export class Question extends AggregateRoot<IQuestionProps> {
+export class Question extends AggregateRoot<QuestionProps> {
   get authorId() {
     return this.props.authorId
   }
@@ -26,12 +26,13 @@ export class Question extends AggregateRoot<IQuestionProps> {
     return this.props.bestAnswerId
   }
 
-  set bestAnswerId(bestAnswerId: UniqueEntityID | undefined) {
+  set bestAnswerId(bestAnswerId: UniqueEntityID | undefined | null) {
     if (bestAnswerId && bestAnswerId !== this.props.bestAnswerId) {
-      this.addDomainEvent(new QuastionBestAnswerChosenEvent(this, bestAnswerId))
+      this.addDomainEvent(new QuestionBestAnswerChosenEvent(this, bestAnswerId))
     }
 
     this.props.bestAnswerId = bestAnswerId
+
     this.touch()
   }
 
@@ -42,6 +43,7 @@ export class Question extends AggregateRoot<IQuestionProps> {
   set title(title: string) {
     this.props.title = title
     this.props.slug = Slug.createFromText(title)
+
     this.touch()
   }
 
@@ -58,10 +60,6 @@ export class Question extends AggregateRoot<IQuestionProps> {
     return this.props.slug
   }
 
-  get createdAt() {
-    return this.props.createdAt
-  }
-
   get attachments() {
     return this.props.attachments
   }
@@ -69,6 +67,10 @@ export class Question extends AggregateRoot<IQuestionProps> {
   set attachments(attachments: QuestionAttachmentList) {
     this.props.attachments = attachments
     this.touch()
+  }
+
+  get createdAt() {
+    return this.props.createdAt
   }
 
   get updatedAt() {
@@ -79,16 +81,16 @@ export class Question extends AggregateRoot<IQuestionProps> {
     return dayjs().diff(this.createdAt, 'days') <= 3
   }
 
+  get excerpt() {
+    return this.content.substring(0, 120).trimEnd().concat('...')
+  }
+
   private touch() {
     this.props.updatedAt = new Date()
   }
 
-  get exerpt() {
-    return this.content.substring(0, 120).trimEnd().concat('...')
-  }
-
   static create(
-    props: Optional<IQuestionProps, 'createdAt' | 'slug' | 'attachments'>,
+    props: Optional<QuestionProps, 'createdAt' | 'slug' | 'attachments'>,
     id?: UniqueEntityID,
   ) {
     const question = new Question(
@@ -100,21 +102,7 @@ export class Question extends AggregateRoot<IQuestionProps> {
       },
       id,
     )
-    return question
-  }
 
-  static delete(
-    props: Optional<IQuestionProps, 'createdAt' | 'slug'>,
-    id?: UniqueEntityID,
-  ) {
-    const question = new Question(
-      {
-        ...props,
-        slug: props.slug ?? Slug.createFromText(props.title),
-        createdAt: new Date(),
-      },
-      id,
-    )
     return question
   }
 }
