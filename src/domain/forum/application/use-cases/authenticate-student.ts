@@ -35,12 +35,12 @@ export class AuthenticateStudentUseCase {
       return left(new WrongCredentialsError())
     }
 
-    const isPasswordCorrect = await this.hashComparer.compare(
+    const isPasswordValid = await this.hashComparer.compare(
       password,
       student.password,
     )
 
-    if (!isPasswordCorrect) {
+    if (!isPasswordValid) {
       return left(new WrongCredentialsError())
     }
 
@@ -48,6 +48,8 @@ export class AuthenticateStudentUseCase {
       sub: student.id.toString(),
     })
 
-    return right({ accessToken })
+    return right({
+      accessToken,
+    })
   }
 }
