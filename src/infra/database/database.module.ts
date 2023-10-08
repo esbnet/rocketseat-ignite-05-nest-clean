@@ -24,13 +24,13 @@ import { PrismaStudentsRepository } from './prisma/repositories/prisma-students-
   ],
   exports: [
     PrismaService,
-    PrismaQuestionAttachmentsRepository,
-    PrismaQuestionsCommentsRepository,
     QuestionsRepository,
     StudentsRepository,
-    PrismaAnswerAttachmentsRepository,
-    PrismaAnswerCommentsRepository,
+    PrismaQuestionsCommentsRepository,
+    PrismaQuestionAttachmentsRepository,
     PrismaAnswersRepository,
+    PrismaAnswerCommentsRepository,
+    PrismaAnswerAttachmentsRepository,
   ],
 })
 export class DatabaseModule {}

@@ -1,6 +1,9 @@
-import { PrismaService } from '@/infra/database/prisma/prisma.service'
+import { StudentAlreadyExistsError } from '@/domain/forum/application/use-cases/errors/student-already-exists-error'
+import { RegisterStudentUseCase } from '@/domain/forum/application/use-cases/register-student'
+import { Public } from '@/infra/auth/public'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import {
+  BadRequestException,
   Body,
   ConflictException,
   Controller,
@@ -8,7 +11,6 @@ import {
   Post,
   UsePipes,
 } from '@nestjs/common'
-import { hash } from 'bcryptjs'
 import { z } from 'zod'
 
 const CreateAccountBodySchema = z.object({
@@ -20,8 +22,9 @@ const CreateAccountBodySchema = z.object({
 type CreateAccountBodySchema = z.infer<typeof CreateAccountBodySchema>
 
 @Controller('/accounts')
+@Public()
 export class CreateAccountController {
-  constructor(private prisma: PrismaService) {}
+  constructor(private registerStudent: RegisterStudentUseCase) {}
 
   @Post()
   @HttpCode(201)
@@ -29,24 +32,21 @@ export class CreateAccountController {
   async handle(@Body() body: CreateAccountBodySchema) {
     const { name, email, password } = body
 
-    const userAlreadyExists = await this.prisma.user.findUnique({
-      where: {
-        email,
-      },
+    const result = await this.registerStudent.execute({
+      name,
+      email,
+      password,
     })
 
-    if (userAlreadyExists) {
-      throw new ConflictException('User already exists with this email.')
+    if (result.isLeft()) {
+      const error = result.value
+
+      switch (error.constructor) {
+        case StudentAlreadyExistsError:
+          throw new ConflictException(error.message)
+        default:
+          throw new BadRequestException(error.message)
+      }
     }
-
-    const passwordHash = await hash(password, 8)
-
-    await this.prisma.user.create({
-      data: {
-        name,
-        email,
-        password: passwordHash,
-      },
-    })
   }
 }
