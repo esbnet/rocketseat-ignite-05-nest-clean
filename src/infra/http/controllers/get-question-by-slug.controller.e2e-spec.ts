@@ -3,10 +3,9 @@ import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { INestApplication } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
-import { hash } from 'bcryptjs'
 import request from 'supertest'
 
-describe('Fetch Recent Questions (e2e)', () => {
+describe('Get question by slug (E2E)', () => {
   let app: INestApplication
   let prisma: PrismaService
   let jwt: JwtService
@@ -24,45 +23,34 @@ describe('Fetch Recent Questions (e2e)', () => {
     await app.init()
   })
 
-  test('[GET] /questions', async () => {
+  test('[GET] /questions/:slug', async () => {
     const user = await prisma.user.create({
       data: {
         name: 'John Doe',
-        email: '5QgQb@example.com',
-        password: await hash('123456', 8),
+        email: 'johndoe@example.com',
+        password: '123456',
       },
     })
 
     const accessToken = jwt.sign({ sub: user.id })
 
-    await prisma.question.createMany({
-      data: [
-        {
-          title: 'Question 01',
-          slug: 'question-01',
-          content: 'question 01 content',
-          authorId: user.id,
-        },
-        {
-          title: 'Question 02',
-          slug: 'question-02',
-          content: 'question 02 content',
-          authorId: user.id,
-        },
-      ],
+    await prisma.question.create({
+      data: {
+        title: 'Question 01',
+        slug: 'question-01',
+        content: 'Question content',
+        authorId: user.id,
+      },
     })
 
     const response = await request(app.getHttpServer())
-      .get('/questions')
+      .get('/questions/question-01')
       .set('Authorization', `Bearer ${accessToken}`)
       .send()
 
     expect(response.statusCode).toBe(200)
     expect(response.body).toEqual({
-      questions: [
-        expect.objectContaining({ title: 'Question 01' }),
-        expect.objectContaining({ title: 'Question 02' }),
-      ],
+      question: expect.objectContaining({ title: 'Question 01' }),
     })
   })
 })

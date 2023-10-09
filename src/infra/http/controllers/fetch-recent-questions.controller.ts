@@ -30,6 +30,6 @@ export class ListQuestionsController {
 
     const questions = result.value.questions
 
-    return { questions: questions.map(QuestionPresenter.toHttp) }
+    return { questions: questions.map(QuestionPresenter.toHTTP) }
   }
 }
