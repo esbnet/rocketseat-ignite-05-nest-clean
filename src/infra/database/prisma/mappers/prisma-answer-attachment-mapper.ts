@@ -2,7 +2,7 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { AnswerAttachment } from '@/domain/forum/enterprise/entities/answer-attachment'
 import { Attachment as PrismaAttachment } from '@prisma/client'
 
-export class PrismaAttachmenaAttachmentMapper {
+export class PrismaAsnwerAttachmentMapper {
   static toDomain(raw: PrismaAttachment): AnswerAttachment {
     if (!raw.answerId) {
       throw new Error('answerId is required')
