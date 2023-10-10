@@ -1,6 +1,10 @@
-import { QuestionAttachment } from '../../enterprise/entities/question-attachment'
+// eslint-disable-next-line prettier/prettier
+import { QuestionAttachment } from '../../enterprise/entities/question-attachment';
 
-export interface QuestionAttachmentsRepository {
-  findManyByQuestionId(questionId: string): Promise<QuestionAttachment[]>
-  deleteManyByQuestionId(questionId: string): Promise<void>
+export abstract class QuestionAttachmentsRepository {
+  abstract findManyByQuestionId(
+    questionId: string,
+  ): Promise<QuestionAttachment[]>
+
+  abstract deleteManyByQuestionId(questionId: string): Promise<void>
 }
