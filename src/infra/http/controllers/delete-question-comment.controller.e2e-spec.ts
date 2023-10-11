@@ -10,7 +10,7 @@ import { QuestionFactory } from 'test/factories/make-question'
 import { QuestionCommentFactory } from 'test/factories/make-question-comment'
 import { StudentFactory } from 'test/factories/make-student'
 
-describe('Delete Answer Comment (e2e)', () => {
+describe('Delete Question Comment (e2e)', () => {
   let app: INestApplication
   let studentFactory: StudentFactory
   let questionFactory: QuestionFactory
@@ -41,7 +41,7 @@ describe('Delete Answer Comment (e2e)', () => {
     await app.init()
   })
 
-  test('[DELETE] /qustions/comments/:id', async () => {
+  test('[DELETE] /questions/comments/:id', async () => {
     // create a student
     const user = await studentFactory.makePrismaStudent()
 
@@ -63,7 +63,7 @@ describe('Delete Answer Comment (e2e)', () => {
     const questionCommentId = questionComment.id.toString()
 
     const response = await request(app.getHttpServer())
-      .delete(`/question/comments/${questionCommentId}`)
+      .delete(`/questions/comments/${questionCommentId}`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send()
 
