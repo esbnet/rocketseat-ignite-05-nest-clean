@@ -22,11 +22,9 @@ const schemaId = randomUUID()
 
 beforeAll(async () => {
   const databaseURL = generateUniqueDatabaseURL(schemaId)
-
   process.env.DATABASE_URL = databaseURL
   execSync('pnpm prisma migrate deploy')
-  // await prisma.$connect()
-  console.log(databaseURL)
+  await prisma.$connect()
 })
 
 afterAll(async () => {
