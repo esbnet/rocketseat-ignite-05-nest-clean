@@ -80,7 +80,7 @@ devDependencies:
     specifier: ^4.17.17
     version: 4.17.19
   '@types/multer':
-    specifier: ^1.4.7
+    specifier: ^1.4.8
     version: 1.4.8
   '@types/node':
     specifier: ^20.3.1
