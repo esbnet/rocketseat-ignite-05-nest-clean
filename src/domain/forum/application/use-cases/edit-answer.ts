@@ -4,6 +4,7 @@ import { ResourceNotAllowedError } from '@/core/errors/errors/resource-not-allow
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found'
 import { AnswerAttachmentsRepository } from '@/domain/forum/application/repositories/answer-attachments-repository'
 import { Answer } from '@/domain/forum/enterprise/entities/answer'
+import { Injectable } from '@nestjs/common'
 import { AnswerAttachment } from '../../enterprise/entities/answer-attachment'
 import { AnswerAttachmentList } from '../../enterprise/entities/answer-attachment-list'
 import { AnswersRepository } from '../repositories/answers-repository'
@@ -21,7 +22,7 @@ type EditAnswerUseCaseResponse = Either<
     answer: Answer
   }
 >
-
+@Injectable()
 export class EditAnswerUseCase {
   constructor(
     private answersRepository: AnswersRepository,
