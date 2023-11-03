@@ -11,20 +11,17 @@ import {
   Put,
 } from '@nestjs/common'
 import { z } from 'zod'
-
 const editQuestionBodySchema = z.object({
   title: z.string(),
   content: z.string(),
+  attachments: z.array(z.string().uuid()),
 })
 
 const bodyValidationPipe = new ZodValidationPipe(editQuestionBodySchema)
-
 type EditQuestionBodySchema = z.infer<typeof editQuestionBodySchema>
-
 @Controller('/questions/:id')
 export class EditQuestionController {
   constructor(private editQuestion: EditQuestionUseCase) {}
-
   @Put()
   @HttpCode(204)
   async handle(
@@ -32,16 +29,17 @@ export class EditQuestionController {
     @CurrentUser() user: UserPayload,
     @Param('id') questionId: string,
   ) {
-    const { title, content } = body
+    const { title, content, attachments } = body
     const userId = user.sub
 
     const result = await this.editQuestion.execute({
-      authorId: userId,
       title,
       content,
-      attachmentsIds: [],
+      authorId: userId,
+      attachmentsIds: attachments,
       questionId,
     })
+
     if (result.isLeft()) {
       throw new BadRequestException()
     }
