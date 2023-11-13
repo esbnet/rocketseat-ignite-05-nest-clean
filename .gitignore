@@ -40,3 +40,4 @@ lerna-debug.log*
 .env
 jwtRS256.key
 jwtRS256.key.pub
+.env.test

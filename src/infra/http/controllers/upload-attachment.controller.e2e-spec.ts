@@ -7,7 +7,7 @@ import request from 'supertest'
 import { QuestionFactory } from 'test/factories/make-question'
 import { StudentFactory } from 'test/factories/make-student'
 
-describe('Upload Attachtment (E2E)', () => {
+describe('Upload attachment (E2E)', () => {
   let app: INestApplication
   let studentFactory: StudentFactory
   let jwt: JwtService
@@ -28,10 +28,8 @@ describe('Upload Attachtment (E2E)', () => {
   })
 
   test('[POST] /attachments', async () => {
-    // create a student
     const user = await studentFactory.makePrismaStudent()
 
-    // create a token
     const accessToken = jwt.sign({ sub: user.id.toString() })
 
     const response = await request(app.getHttpServer())
@@ -40,5 +38,8 @@ describe('Upload Attachtment (E2E)', () => {
       .attach('file', './test/e2e/sample-upload.png')
 
     expect(response.statusCode).toBe(201)
+    expect(response.body).toEqual({
+      attachmentId: expect.any(String),
+    })
   })
 })

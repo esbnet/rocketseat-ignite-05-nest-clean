@@ -44,11 +44,16 @@ export class AuthenticateStudentUseCase {
       return left(new WrongCredentialsError())
     }
 
-    // TODO: revisar a implementação do encrypt
     const accessToken = await this.encrypter.encrypt({
       sub: student.id.toString(),
     })
 
-    return right({ accessToken })
+    if (!accessToken) {
+      return left(new WrongCredentialsError())
+    }
+
+    return right({
+      accessToken,
+    })
   }
 }
