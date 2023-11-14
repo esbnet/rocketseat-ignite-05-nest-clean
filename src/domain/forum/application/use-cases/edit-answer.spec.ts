@@ -8,6 +8,7 @@ import { EditAnswerUseCase } from './edit-answer'
 
 let inMemoryAnswerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
 let inMemoryAnswersRepository: InMemoryAnswersRepository
+
 let sut: EditAnswerUseCase
 
 describe('Edit Answer', () => {
