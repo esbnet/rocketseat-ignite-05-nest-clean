@@ -24,17 +24,17 @@ describe('Fetch Answers Comments', () => {
     inMemoryStudentsRepository.items.push(student)
 
     const comment1 = makeAnswerComment({
-      answerId: new UniqueEntityID('question-1'),
+      answerId: new UniqueEntityID('answer-1'),
       authorId: student.id,
     })
 
     const comment2 = makeAnswerComment({
-      answerId: new UniqueEntityID('question-1'),
+      answerId: new UniqueEntityID('answer-1'),
       authorId: student.id,
     })
 
     const comment3 = makeAnswerComment({
-      answerId: new UniqueEntityID('question-1'),
+      answerId: new UniqueEntityID('answer-1'),
       authorId: student.id,
     })
 
