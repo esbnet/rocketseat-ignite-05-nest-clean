@@ -35,7 +35,7 @@ export class PrismaNotificationsRepository implements NotificationsRepository {
 
     await this.prisma.notification.update({
       where: {
-        id: data.id,
+        id: notification.id.toString(),
       },
       data,
     })
